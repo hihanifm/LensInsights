@@ -1,0 +1,155 @@
+# LensInsights Development Rules
+
+## Philosophy: Radical Simplicity
+
+Keep insights **minimal and declarative**. The Lens framework does the heavy lifting.
+
+## Core Principles
+
+### 1. Simplicity First
+- Insights should be **pure configuration** whenever possible
+- Only 30-40 lines of code is ideal
+- If it can be done with config, don't write code
+
+### 2. Avoid Custom Code
+- **Don't write custom processing functions** unless absolutely necessary
+- The framework provides excellent defaults for:
+  - File filtering
+  - Line matching
+  - Result formatting
+  - Progress tracking
+  - Error handling
+- Only add `process_results()` if defaults truly don't work
+
+### 3. No Processing Unless It Adds Real Value
+- Ask: "Does this custom code provide significant value over defaults?"
+- If the answer is "slightly better formatting" → use defaults
+- If the answer is "complex aggregation/statistics" → custom code is OK
+
+### 4. Never Re-mention Defaults
+- Don't specify config values if they're already the default
+- Examples of what to AVOID:
+  ```python
+  # ❌ BAD - these are defaults
+  "reading_mode": "ripgrep"  # Default is already ripgrep
+  "regex_flags": ""          # Default is already empty
+  "ai": {
+      "enabled": True        # Default is already True
+  }
+  ```
+- Only specify when overriding defaults
+
+### 5. No Standalone Execution Boilerplate
+- Remove `if __name__ == "__main__"` blocks
+- Users can test with: `./scripts/run_insight.py`
+- Keep files purely declarative
+
+## Insight Template
+
+```python
+"""Brief description of what this insight detects."""
+
+INSIGHT_CONFIG = {
+    "metadata": {
+        "id": "unique_id",
+        "name": "Display Name",
+        "description": "What it does",
+        "folder": "category"  # optional
+    },
+    "filters": {
+        "line_pattern": r"PATTERN_TO_MATCH"
+        # Only add other fields if overriding defaults
+    },
+    "ai": {
+        "auto": True,  # Only if you want auto-trigger
+        "prompt_type": "custom",
+        "prompt": """Your custom AI prompt here.
+
+{result_content}"""
+    }
+}
+```
+
+That's it! Nothing more needed in most cases.
+
+## When Custom Code is OK
+
+Only add Python code when you need:
+- Complex aggregation (counting unique values, grouping, statistics)
+- Multi-pass analysis (analyzing results in stages)
+- Custom data structures (building graphs, trees, etc.)
+- Non-filtering operations (transformations, calculations)
+
+## Examples
+
+### ✅ GOOD - Minimal Config
+```python
+"""Detects Android crashes."""
+
+INSIGHT_CONFIG = {
+    "metadata": {
+        "id": "android_crash",
+        "name": "Android Crash Detector",
+        "description": "Detects FATAL_EXCEPTION in logs"
+    },
+    "filters": {
+        "line_pattern": r"FATAL\s+EXCEPTION"
+    },
+    "ai": {
+        "auto": True,
+        "prompt_type": "explain"
+    }
+}
+```
+
+### ❌ BAD - Unnecessary Complexity
+```python
+"""Detects Android crashes."""
+
+INSIGHT_CONFIG = {
+    "metadata": {
+        "id": "android_crash",
+        "name": "Android Crash Detector",
+        "description": "Detects FATAL_EXCEPTION in logs"
+    },
+    "filters": {
+        "line_pattern": r"FATAL\s+EXCEPTION",
+        "reading_mode": "ripgrep"  # ❌ Unnecessary - already default
+    },
+    "ai": {
+        "enabled": True,  # ❌ Unnecessary - already default
+        "auto": True,
+        "prompt_type": "explain"
+    }
+}
+
+# ❌ Unnecessary - default formatting is fine
+def process_results(filter_result):
+    lines = filter_result.get_lines()
+    return {
+        "content": "\n".join(lines),
+        "metadata": {"count": len(lines)}
+    }
+
+# ❌ Unnecessary - use run_insight.py script instead
+if __name__ == "__main__":
+    from app.utils.config_insight_runner import main_config_standalone
+    main_config_standalone(__file__)
+```
+
+## Code Review Checklist
+
+Before committing an insight, ask:
+- [ ] Can this be done with config only? (If yes, remove code)
+- [ ] Am I re-specifying any default values? (If yes, remove them)
+- [ ] Does my custom processing add real value? (If no, remove it)
+- [ ] Is the file under 50 lines? (If no, simplify)
+- [ ] Could someone copy this and modify it in 2 minutes? (If no, simplify)
+
+## Remember
+
+> "Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away."
+> — Antoine de Saint-Exupéry
+
+The best insight is the one that does exactly what's needed with the **minimum amount of code**.
+
