@@ -2,40 +2,12 @@
 
 Custom insights for analyzing Android logs, crash reports, and bug reports.
 
-## Available Insights
+## Available Insight
 
-### 1. Android Crash Analyzer (Advanced)
-**File:** `android_crash_analyzer.py`
-
-A comprehensive crash analyzer that detects `FATAL EXCEPTION` crashes and captures 10 lines of context after each crash for detailed analysis.
-
-**Features:**
-- ✅ Detects FATAL_EXCEPTION patterns
-- ✅ Captures 10 lines of stack trace context
-- ✅ Uses ripgrep for fast searching (with fallback)
-- ✅ AI-powered crash analysis with custom prompts
-- ✅ Auto-triggers AI after detection
-- ✅ Provides root cause, severity, and fix recommendations
-
-**Best for:** 
-- Production crash investigations
-- Detailed stack trace analysis
-- When you need context around crashes
-
-**Usage:**
-```bash
-# Test standalone
-cd /path/to/awebees/backend
-source venv/bin/activate
-python /path/to/LensInsights/android/android_crash_analyzer.py /path/to/android.log
-```
-
----
-
-### 2. Android Crash Detector (Simple)
+### Android Crash Detector
 **File:** `simple_crash_detector.py`
 
-A simpler, config-based crash detector that's easier to customize and understand.
+A config-based crash detector that detects `FATAL EXCEPTION` crashes with AI-powered analysis.
 
 **Features:**
 - ✅ Config-based (easy to modify)
@@ -43,11 +15,12 @@ A simpler, config-based crash detector that's easier to customize and understand
 - ✅ Fast ripgrep-based searching
 - ✅ AI-powered analysis with custom prompt
 - ✅ Auto-triggers AI after detection
+- ✅ Simple and easy to customize
 
 **Best for:**
-- Quick crash detection
+- Quick crash detection and analysis
 - Learning how config-based insights work
-- Simple crash counts and summaries
+- Easy customization for specific needs
 
 **Usage:**
 ```bash
@@ -59,21 +32,6 @@ python -m app.utils.config_insight_runner /path/to/LensInsights/android/simple_c
 
 ---
 
-## Comparison
-
-| Feature | Advanced | Simple |
-|---------|----------|--------|
-| Implementation | Class-based | Config-based |
-| Context Lines | ✅ 10 lines after | ❌ Match line only |
-| Stack Traces | ✅ Full | ❌ Partial |
-| AI Analysis | ✅ Yes | ✅ Yes |
-| Auto AI | ✅ Yes | ✅ Yes |
-| Customization | Moderate | Easy |
-| Performance | Fast | Fast |
-| Code Complexity | Higher | Lower |
-
----
-
 ## Adding to Lens
 
 1. Open Lens application
@@ -81,13 +39,13 @@ python -m app.utils.config_insight_runner /path/to/LensInsights/android/simple_c
 3. Go to "External Insights" tab
 4. Click "Add Directory"
 5. Enter: `/Users/yourname/LensInsights`
-6. Both insights will appear under "Android" folder
+6. The insight will appear under "Android" folder
 
 ---
 
-## Customizing the AI Prompts
+## Customizing the AI Prompt
 
-Both insights use custom AI prompts. You can modify them to focus on specific aspects:
+The insight uses a custom AI prompt. You can modify it in `simple_crash_detector.py` to focus on specific aspects:
 
 ### For More Technical Analysis
 ```python
@@ -96,7 +54,8 @@ Both insights use custom AI prompts. You can modify them to focus on specific as
 2. Threading issues (main thread vs background)
 3. Memory-related crashes
 4. Null pointer exceptions and their origins
-"""
+
+{result_content}"""
 ```
 
 ### For Product/Business Focus
@@ -106,7 +65,8 @@ Both insights use custom AI prompts. You can modify them to focus on specific as
 2. Frequency - which crashes happen most often?
 3. Business priority - which should be fixed first?
 4. Customer-facing messaging recommendations
-"""
+
+{result_content}"""
 ```
 
 ### For Security Analysis
@@ -116,14 +76,15 @@ Both insights use custom AI prompts. You can modify them to focus on specific as
 2. Could any crash be exploited?
 3. Are there authentication/permission issues?
 4. Security-focused fix recommendations
-"""
+
+{result_content}"""
 ```
 
 ---
 
 ## Pattern Customization
 
-To detect other Android issues, modify the `line_pattern`:
+To detect other Android issues, modify the `line_pattern` in `simple_crash_detector.py`:
 
 ```python
 # ANR (Application Not Responding) detection
@@ -135,8 +96,74 @@ To detect other Android issues, modify the `line_pattern`:
 # Out of Memory
 "line_pattern": r"OutOfMemoryError"
 
-# Multiple patterns (combine insights or use OR regex)
+# Multiple patterns (use OR regex)
 "line_pattern": r"(FATAL\s+EXCEPTION|ANR\s+in|OutOfMemoryError)"
+```
+
+---
+
+## Creating More Insights
+
+You can easily create more insights by copying and modifying `simple_crash_detector.py`:
+
+### Example: ANR Detector
+```python
+"""Android ANR (Application Not Responding) Detector."""
+
+INSIGHT_CONFIG = {
+    "metadata": {
+        "id": "android_anr",
+        "name": "ANR Detector",
+        "description": "Detects Application Not Responding issues",
+        "folder": "android"
+    },
+    "filters": {
+        "line_pattern": r"ANR\s+in",
+        "reading_mode": "ripgrep"
+    },
+    "ai": {
+        "enabled": True,
+        "auto": True,
+        "prompt_type": "custom",
+        "prompt": """Analyze these ANR (Application Not Responding) issues:
+1. Which operations are blocking the main thread?
+2. How long are the ANRs lasting?
+3. What are the immediate fixes needed?
+
+{result_content}"""
+    }
+}
+
+if __name__ == "__main__":
+    from app.utils.config_insight_runner import main_config_standalone
+    main_config_standalone(__file__)
+```
+
+### Example: Out of Memory Detector
+```python
+"""Android Out of Memory Detector."""
+
+INSIGHT_CONFIG = {
+    "metadata": {
+        "id": "android_oom",
+        "name": "Out of Memory Detector",
+        "description": "Detects OutOfMemoryError issues",
+        "folder": "android"
+    },
+    "filters": {
+        "line_pattern": r"OutOfMemoryError",
+        "reading_mode": "ripgrep"
+    },
+    "ai": {
+        "enabled": True,
+        "auto": True,
+        "prompt_type": "recommend"
+    }
+}
+
+if __name__ == "__main__":
+    from app.utils.config_insight_runner import main_config_standalone
+    main_config_standalone(__file__)
 ```
 
 ---
@@ -145,7 +172,7 @@ To detect other Android issues, modify the `line_pattern`:
 
 1. **Use sample logs**: Test with `backend/samples/android-bugreport.txt` from Lens repo
 2. **Check ripgrep**: Verify ripgrep is installed: `which rg`
-3. **Enable debug logs**: Set `logging.basicConfig(level=logging.DEBUG)` in standalone mode
+3. **Enable debug logs**: Check Lens backend logs for detailed output
 4. **AI testing**: Make sure AI is configured in Lens Settings > AI Configuration
 
 ---
@@ -168,12 +195,17 @@ choco install ripgrep
 ### "No crashes found" but you know there are crashes
 - Check the log file encoding (should be UTF-8 or ASCII)
 - Try the pattern in a text editor to verify it matches
-- Use case-insensitive search (enabled by default)
+- Pattern matching is case-insensitive by default
 
 ### AI not triggering
 - Check Lens Settings > AI Configuration (API key must be set)
 - Verify `"auto": True` in the `ai` config
 - Check backend logs for AI errors
+
+### Changes not detected
+- Lens auto-reloads insights (2-second debounce)
+- Save your file and wait a moment
+- Check Settings > External Insights to refresh manually
 
 ---
 
@@ -186,5 +218,3 @@ choco install ripgrep
 ---
 
 Happy crash hunting! 🐛🔍
-
-

@@ -27,33 +27,24 @@ After adding the directory:
 
 ## 📱 Android Crash Analysis
 
-Two insights are included for Android crash detection:
+A simple, config-based insight for Android crash detection:
 
-### Advanced Analyzer (Recommended)
-**Best for:** Detailed crash investigation with full stack traces
-
-```
-✅ Captures 10 lines of context after each crash
-✅ Uses ripgrep for ultra-fast searching
-✅ AI auto-triggers with detailed analysis
-✅ Provides root cause and fix recommendations
-```
-
-### Simple Detector
-**Best for:** Quick crash counts and summaries
+### Android Crash Detector
+**Best for:** Easy crash detection with AI-powered analysis
 
 ```
 ✅ Config-based (easy to customize)
-✅ Fast pattern matching
-✅ AI-powered summaries
-✅ Great for learning
+✅ Fast ripgrep pattern matching
+✅ AI auto-triggers with detailed analysis
+✅ Provides root cause and fix recommendations
+✅ Simple to modify for your needs
 ```
 
 ## 🧪 Test It Out
 
 ### Option 1: Using Lens UI (Recommended)
 1. Add this directory to Lens (see above)
-2. Select "Android Crash Analyzer" from the insight list
+2. Select "Android Crash Detector" from the insight list
 3. Browse to a log file (e.g., `backend/samples/android-bugreport.txt` in Lens repo)
 4. Click "Analyze Files"
 5. View results and AI analysis
@@ -68,10 +59,7 @@ source venv/bin/activate  # macOS/Linux
 # or
 venv\Scripts\activate  # Windows
 
-# Run the advanced analyzer
-python /path/to/LensInsights/android/android_crash_analyzer.py /path/to/android.log
-
-# Or run the simple detector
+# Run the crash detector
 python -m app.utils.config_insight_runner /path/to/LensInsights/android/simple_crash_detector.py /path/to/android.log
 ```
 
@@ -90,20 +78,19 @@ See the [AI Setup Guide](../awebees/docs/AI_SETUP.md) in the Lens repo for detai
 
 ```
 LensInsights/
-├── README.md              # Full documentation
-├── QUICK_START.md        # This file
-├── .gitignore            # Git ignore rules
-└── android/              # Android-specific insights
-    ├── README.md         # Android insights documentation
-    ├── android_crash_analyzer.py    # Advanced analyzer (class-based)
-    └── simple_crash_detector.py     # Simple detector (config-based)
+├── README.md                      # Full documentation
+├── QUICK_START.md                # This file
+├── .gitignore                    # Git ignore rules
+└── android/                      # Android-specific insights
+    ├── README.md                 # Android insights documentation
+    └── simple_crash_detector.py  # Crash detector (config-based)
 ```
 
 ## 🎯 What's Next?
 
-1. **Try both insights** to see which one fits your workflow
+1. **Try the crash detector** on your Android logs
 2. **Customize the AI prompts** to focus on what matters to you
-3. **Create your own insights** - see [README.md](README.md) for guide
+3. **Create more insights** - see [README.md](README.md) for guide
 4. **Add more folders** - organize insights by category (ios/, web/, etc.)
 
 ## 📚 Documentation
