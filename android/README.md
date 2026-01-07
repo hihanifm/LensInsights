@@ -114,15 +114,12 @@ INSIGHT_CONFIG = {
     "metadata": {
         "id": "android_anr",
         "name": "ANR Detector",
-        "description": "Detects Application Not Responding issues",
-        "folder": "android"
+        "description": "Detects Application Not Responding issues"
     },
     "filters": {
-        "line_pattern": r"ANR\s+in",
-        "reading_mode": "ripgrep"
+        "line_pattern": r"ANR\s+in"
     },
     "ai": {
-        "enabled": True,
         "auto": True,
         "prompt_type": "custom",
         "prompt": """Analyze these ANR (Application Not Responding) issues:
@@ -133,10 +130,6 @@ INSIGHT_CONFIG = {
 {result_content}"""
     }
 }
-
-if __name__ == "__main__":
-    from app.utils.config_insight_runner import main_config_standalone
-    main_config_standalone(__file__)
 ```
 
 ### Example: Out of Memory Detector
@@ -147,23 +140,16 @@ INSIGHT_CONFIG = {
     "metadata": {
         "id": "android_oom",
         "name": "Out of Memory Detector",
-        "description": "Detects OutOfMemoryError issues",
-        "folder": "android"
+        "description": "Detects OutOfMemoryError issues"
     },
     "filters": {
-        "line_pattern": r"OutOfMemoryError",
-        "reading_mode": "ripgrep"
+        "line_pattern": r"OutOfMemoryError"
     },
     "ai": {
-        "enabled": True,
         "auto": True,
         "prompt_type": "recommend"
     }
 }
-
-if __name__ == "__main__":
-    from app.utils.config_insight_runner import main_config_standalone
-    main_config_standalone(__file__)
 ```
 
 ---

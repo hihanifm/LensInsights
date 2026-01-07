@@ -53,8 +53,8 @@ INSIGHT_CONFIG = {
     "metadata": {
         "id": "unique_id",
         "name": "Display Name",
-        "description": "What it does",
-        "folder": "category"  # optional
+        "description": "What it does"
+        # folder is auto-inferred from directory - no need to specify
     },
     "filters": {
         "line_pattern": r"PATTERN_TO_MATCH"
@@ -91,6 +91,7 @@ INSIGHT_CONFIG = {
         "id": "android_crash",
         "name": "Android Crash Detector",
         "description": "Detects FATAL_EXCEPTION in logs"
+        # folder auto-inferred from directory (android/)
     },
     "filters": {
         "line_pattern": r"FATAL\s+EXCEPTION"

@@ -4,8 +4,7 @@ INSIGHT_CONFIG = {
     "metadata": {
         "id": "android_crash",
         "name": "Android Crash Detector",
-        "description": "Detects FATAL_EXCEPTION in Android logs with AI analysis",
-        "folder": "android"
+        "description": "Detects FATAL_EXCEPTION in Android logs with AI analysis"
     },
     "filters": {
         "line_pattern": r"FATAL\s+EXCEPTION",
