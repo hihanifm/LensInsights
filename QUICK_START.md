@@ -187,3 +187,4 @@ INSIGHT_CONFIG = {
 
 Happy analyzing! 🔍✨
 
+
