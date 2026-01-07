@@ -7,11 +7,9 @@ INSIGHT_CONFIG = {
         "description": "Detects FATAL_EXCEPTION in Android logs with AI analysis"
     },
     "filters": {
-        "line_pattern": r"FATAL\s+EXCEPTION",
-        "reading_mode": "ripgrep"
+        "line_pattern": r"FATAL\s+EXCEPTION"
     },
     "ai": {
-        "enabled": True,
         "auto": True,
         "prompt_type": "custom",
         "prompt": """You are an expert Android developer analyzing crash logs.
