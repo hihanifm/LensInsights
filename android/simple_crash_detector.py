@@ -1,23 +1,19 @@
-"""Simple Android Crash Detector - Config-based insight with AI analysis.
-
-This is a simpler, config-based version of the crash detector that demonstrates
-how to use INSIGHT_CONFIG with AI integration.
-"""
+"""Android Crash Detector - Detects FATAL_EXCEPTION in Android logs with AI analysis."""
 
 INSIGHT_CONFIG = {
     "metadata": {
-        "id": "android_simple_crash",
-        "name": "Android Crash Detector (Simple)",
+        "id": "android_crash",
+        "name": "Android Crash Detector",
         "description": "Detects FATAL_EXCEPTION in Android logs with AI analysis",
         "folder": "android"
     },
     "filters": {
         "line_pattern": r"FATAL\s+EXCEPTION",
-        "reading_mode": "ripgrep"  # Fast pattern matching
+        "reading_mode": "ripgrep"
     },
     "ai": {
         "enabled": True,
-        "auto": True,  # Automatically trigger AI after detection
+        "auto": True,
         "prompt_type": "custom",
         "prompt": """You are an expert Android developer analyzing crash logs.
 
@@ -34,60 +30,6 @@ Be concise and focus on actionable insights.
 {result_content}"""
     }
 }
-
-
-def process_results(filter_result):
-    """
-    Format the filtered crash lines into a readable report.
-    
-    Args:
-        filter_result: FilterResult with matched lines
-        
-    Returns:
-        dict with 'content' and 'metadata' keys
-    """
-    lines_by_file = filter_result.get_lines_by_file()
-    total_crashes = filter_result.get_total_line_count()
-    
-    # Format output
-    content = "Android Crash Detection (Simple)\n"
-    content += "=" * 80 + "\n\n"
-    content += f"Total FATAL_EXCEPTION lines found: {total_crashes}\n"
-    content += f"Files analyzed: {filter_result.get_file_count()}\n\n"
-    
-    if total_crashes == 0:
-        content += "No crashes found.\n"
-        return {
-            "content": content,
-            "metadata": {"total_crashes": 0}
-        }
-    
-    # Show crashes per file
-    for file_path, lines in lines_by_file.items():
-        import os
-        content += "=" * 80 + "\n"
-        content += f"File: {os.path.basename(file_path)}\n"
-        content += f"Path: {file_path}\n"
-        content += f"Crashes: {len(lines)}\n"
-        content += "=" * 80 + "\n\n"
-        
-        # Show first 50 crash lines to avoid overwhelming the AI
-        for i, line in enumerate(lines[:50], 1):
-            content += f"{i}. {line.strip()}\n"
-        
-        if len(lines) > 50:
-            content += f"\n... and {len(lines) - 50} more crash lines\n"
-        
-        content += "\n"
-    
-    return {
-        "content": content,
-        "metadata": {
-            "total_crashes": total_crashes,
-            "files_analyzed": filter_result.get_file_count()
-        }
-    }
-
 
 # Standalone execution support
 if __name__ == "__main__":
