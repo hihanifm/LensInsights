@@ -24,6 +24,7 @@ else
 fi
 
 echo "✓ Found Lens project at: $LENS_DIR"
+echo ""
 
 # Check if venv exists
 if [ ! -d "$LENS_DIR/backend/venv" ]; then
@@ -33,8 +34,8 @@ if [ ! -d "$LENS_DIR/backend/venv" ]; then
 fi
 
 # Check arguments
-if [ $# -lt 2 ]; then
-  echo "Usage: $0 <insight_py_file> <log_file> [log_file2 ...]"
+if [ $# -lt 1 ]; then
+  echo "Usage: $0 <insight_py_file> [log_file] [log_file2 ...]"
   echo ""
   echo "Available insights:"
   echo "  - android/simple_crash_detector.py  - Detects Android FATAL_EXCEPTION crashes"
@@ -42,6 +43,7 @@ if [ $# -lt 2 ]; then
   echo "Examples:"
   echo "  $0 android/simple_crash_detector.py /path/to/crash.log"
   echo "  $0 android/simple_crash_detector.py ~/logs/*.log"
+  echo "  $0 android/simple_crash_detector.py  # Interactive mode"
   exit 1
 fi
 
@@ -60,7 +62,13 @@ if [ ! -f "$INSIGHT_FILE" ]; then
 fi
 
 echo "✓ Using insight: $(basename "$INSIGHT_FILE")"
-echo "✓ Analyzing $# file(s)"
+
+# Show mode based on whether files were provided
+if [ $# -eq 0 ]; then
+  echo "✓ Mode: Interactive (no files provided)"
+else
+  echo "✓ Analyzing $# file(s)"
+fi
 echo ""
 
 # Activate venv and run the insight
