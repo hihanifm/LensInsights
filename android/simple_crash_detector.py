@@ -31,9 +31,4 @@ Be concise and focus on actionable insights.
     }
 }
 
-# Standalone execution support
-if __name__ == "__main__":
-    from app.utils.config_insight_runner import main_config_standalone
-    main_config_standalone(__file__)
-
 
