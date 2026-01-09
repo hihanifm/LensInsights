@@ -22,6 +22,8 @@ LensInsights/
 ├── my_insight.py
 ├── another_insight.py
 ├── custom_analyzer.py
+├── samples/
+│   └── README.md
 └── README.md
 ```
 
@@ -38,10 +40,38 @@ LensInsights/
 │   └── performance_monitor.py
 ├── ios/
 │   └── crash_reporter.py
+├── samples/
+│   └── README.md
 └── README.md
 ```
 
 Both structures are supported, and you can mix them based on your needs.
+
+## Sample Files
+
+You can include sample log files in a `samples/` subdirectory that will be automatically discovered and made available to users in the Lens UI.
+
+### Adding Sample Files
+
+1. Create a `samples/` directory in your LensInsights repository
+2. Place sample files (`.txt`, `.log`, `.zip`, `.gz`) in the `samples/` directory
+3. Optionally create metadata JSON files (e.g., `my-sample.json`) to provide descriptions and recommended insights
+4. Lens will automatically discover and extract compressed files on startup
+
+### Example
+
+```
+LensInsights/
+├── android/
+│   └── simple_crash_detector.py
+├── samples/
+│   ├── android-bugreport.zip      # Compressed sample (auto-extracted)
+│   ├── android-bugreport.json     # Optional metadata
+│   └── web-server-logs.log        # Plain text sample
+└── README.md
+```
+
+For more details, see `samples/README.md` in this repository.
 
 ## Creating an Insight
 
