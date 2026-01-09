@@ -4,18 +4,34 @@ Welcome to LensInsights! This repository contains custom insights for the Lens a
 
 ## 🚀 Getting Started (2 minutes)
 
-### 1. Add to Lens
+### 1. Clone the Repository
+
+First, clone this repository to your local machine:
+
+```bash
+git clone https://github.com/hihanifm/LensInsights.git
+cd LensInsights
+```
+
+Or if you prefer a different location:
+```bash
+git clone https://github.com/hihanifm/LensInsights.git /path/to/your/desired/location
+```
+
+### 2. Add to Lens
 
 1. Open your Lens application
 2. Click the **Settings** icon (⚙️) in the bottom-left corner
 3. Go to the **"External Insights"** tab
-4. Click **"Add Directory"**
-5. Enter the path to this directory: `/Users/yourname/LensInsights`
-6. Click **"Save"**
+4. Click **"Add Directory"** (or **"Add Path"**)
+5. Enter the path to the cloned repository directory:
+   - **macOS/Linux**: `/Users/yourname/LensInsights` (or your custom path)
+   - **Windows**: `C:\Users\yourname\LensInsights` (or your custom path)
+6. Click **"Save"** (or **"Add Path"**)
 
 Your insights will be loaded immediately! 🎉
 
-### 2. Use the Insights
+### 3. Use the Insights
 
 After adding the directory:
 
@@ -43,11 +59,12 @@ A simple, config-based insight for Android crash detection:
 ## 🧪 Test It Out
 
 ### Option 1: Using Lens UI (Recommended)
-1. Add this directory to Lens (see above)
-2. Select "Android Crash Detector" from the insight list
-3. Browse to a log file (e.g., `backend/samples/android-bugreport.txt` in Lens repo)
-4. Click "Analyze Files"
-5. View results and AI analysis
+1. Clone this repository (see step 1 above)
+2. Add the cloned directory to Lens (see step 2 above)
+3. Select "Android Crash Detector" from the insight list
+4. A sample file is automatically loaded, or you can enter your own log file path
+5. Click "Analyze Files"
+6. View results and AI analysis
 
 ### Option 2: Standalone Testing
 ```bash
