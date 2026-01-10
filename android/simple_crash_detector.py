@@ -6,10 +6,19 @@ INSIGHT_CONFIG = {
         "name": "Android Crash Detector",
         "description": "Detects FATAL_EXCEPTION in Android logs with AI analysis"
     },
-    "filters": {
-        "line_pattern": r"FATAL\s+EXCEPTION",
-        "context_after": 10
-    },
+    "file_filters": [
+        {
+            "id": "all_files",
+            "file_patterns": [],  # Empty = process all files (file filter applied only for folder paths)
+            "line_filters": [
+                {
+                    "id": "fatal_exception",
+                    "pattern": r"FATAL\s+EXCEPTION",
+                    "context_after": 10
+                }
+            ]
+        }
+    ],
     "ai": {
         "auto": True,
         "prompt_type": "custom",
