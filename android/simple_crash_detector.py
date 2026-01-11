@@ -13,8 +13,7 @@ INSIGHT_CONFIG = {
             "line_filters": [
                 {
                     "id": "fatal_exception",
-                    "pattern": r"FATAL\s+EXCEPTION",
-                    "context_after": 10
+                    "ripgrep_command": r"-A 10 'FATAL\s+EXCEPTION'"
                 }
             ]
         }
